@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="SearchText" parent="@android:style/TextAppearance.Widget.EditText">
+        <item name="fontFamily">@font/gudea_font</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:textColor">@color/app_white</item>
+    </style>
+    <style name="HintText" parent="@android:style/TextAppearance.Widget.EditText">
+        <item name="fontFamily">@font/gudea_font</item>
+        <item name="android:textStyle">italic</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/icon_gray</item>
+    </style>
+    <style name="MenuText" parent="@android:style/TextAppearance.Widget.TextView">
+        <item name="fontFamily">@font/gudea_bold</item>
+        <item name="android:textSize">30sp</item>
+    </style>
+</resources>

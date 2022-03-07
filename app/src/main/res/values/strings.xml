@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">SpotAssets</string>
+    <string name="enter_package_name">Type package name e.g com.example.com</string>
+    <string name="wordlist">Wordlist</string>
+    <string name="hosts">Hosts</string>
+    <string name="s3_buckets">S3 Buckets</string>
+    <string name="all_assets">All Assets</string>
+    <string name="url_params">URL Params</string>
+    <string name="apps">Apps</string>
+    <string name="subdomains">Subdomains</string>
+    <string name="urls">URLs</string>
+    <string name="search_for_s3">Search For S3</string>
+</resources>

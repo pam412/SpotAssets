@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/AssetsSpotlight/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.19166666666666668" />
+        <entry key="..\:/AssetsSpotlight/app/src/main/res/drawable/hint_text_color.xml" value="0.19166666666666668" />
+        <entry key="..\:/AssetsSpotlight/app/src/main/res/drawable/ic_launcher_background.xml" value="0.15185185185185185" />
+        <entry key="..\:/AssetsSpotlight/app/src/main/res/drawable/search_bar.xml" value="0.19166666666666668" />
+        <entry key="..\:/AssetsSpotlight/app/src/main/res/drawable/splash_background.xml" value="0.13333333333333333" />
+        <entry key="..\:/AssetsSpotlight/app/src/main/res/drawable/splash_color.xml" value="0.19166666666666668" />
+        <entry key="..\:/AssetsSpotlight/app/src/main/res/drawable/splash_gradient.xml" value="0.19166666666666668" />
+        <entry key="..\:/AssetsSpotlight/app/src/main/res/font/gudea_font.xml" value="0.2" />
+        <entry key="..\:/AssetsSpotlight/app/src/main/res/font/typographica.xml" value="0.20572916666666666" />
+        <entry key="..\:/AssetsSpotlight/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/AssetsSpotlight/app/src/main/res/layout/carousal_motion_layout.xml" value="0.1644021739130435" />
+        <entry key="..\:/AssetsSpotlight/app/src/main/res/layout/carousal_motion_scene.xml" value="0.1644021739130435" />
+        <entry key="..\:/AssetsSpotlight/app/src/main/res/layout/carousel_menu_item.xml" value="0.12239583333333333" />
+        <entry key="..\:/AssetsSpotlight/app/src/main/res/layout/carousel_motion_layout.xml" value="0.3333333333333333" />
+        <entry key="..\:/AssetsSpotlight/app/src/main/res/layout/fragment_details_list.xml" value="0.10144927536231885" />
+        <entry key="..\:/AssetsSpotlight/app/src/main/res/layout/home_fragment.xml" value="0.22" />
+        <entry key="..\:/AssetsSpotlight/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1609375" />
+        <entry key="..\:/AssetsSpotlight/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1609375" />
+        <entry key="..\:/AssetsSpotlight/app/src/main/res/xml/carousal_motion_scene.xml" value="0.1644021739130435" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>
