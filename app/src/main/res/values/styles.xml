@@ -9,11 +9,32 @@
     <style name="HintText" parent="@android:style/TextAppearance.Widget.EditText">
         <item name="fontFamily">@font/gudea_font</item>
         <item name="android:textStyle">italic</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/icon_gray</item>
     </style>
     <style name="MenuText" parent="@android:style/TextAppearance.Widget.TextView">
         <item name="fontFamily">@font/gudea_bold</item>
         <item name="android:textSize">30sp</item>
+    </style>
+    <style name="SheetText" parent="@android:style/TextAppearance.Widget.TextView">
+        <item name="fontFamily">@font/gudea_bold</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+    <style name="DetailsListText" parent="@android:style/TextAppearance.Widget.TextView">
+        <item name="fontFamily">@font/gudea</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+    <style name="DetailsListHeader" parent="@android:style/TextAppearance.Widget.TextView">
+        <item name="fontFamily">@font/gudea</item>
+        <item name="android:textSize">25sp</item>
+    </style>
+    <style name="SheetDialog" parent="Theme.Design.BottomSheetDialog">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:colorBackground">     @android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:backgroundDimAmount">0.3</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
     </style>
 </resources>

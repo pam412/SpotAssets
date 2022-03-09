@@ -8,7 +8,7 @@ import com.pam.spotassets.R
 class CarouselTransformer(val context: Context) :
     ViewPager2.PageTransformer {
     override fun transformPage(page: View, position: Float) {
-        val pageMarginPx = 630
+        val pageMarginPx = page.width / 2
         val offsetPx = context.resources.getDimensionPixelOffset(R.dimen._40dp)
 
         page.scaleY = 1 - (0.25f * kotlin.math.abs(position))

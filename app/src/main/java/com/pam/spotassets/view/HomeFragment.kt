@@ -1,9 +1,13 @@
 package com.pam.spotassets.view
 
 import android.content.Context
+import android.content.pm.ApplicationInfo
+import android.content.pm.PackageManager
 import android.graphics.Rect
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import android.os.Bundle
+import android.text.InputType
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -19,8 +23,14 @@ import com.pam.spotassets.R
 import com.pam.spotassets.databinding.CarouselMotionLayoutBinding
 import com.pam.spotassets.databinding.HomeFragmentBinding
 import com.pam.spotassets.viewmodel.HomeViewModel
-
-
+import android.view.MotionEvent
+import android.view.View.OnTouchListener
+import android.widget.Toast
+import androidx.fragment.app.viewModels
+import android.content.pm.PackageInfo
+import androidx.lifecycle.Observer
+import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
+import androidx.navigation.fragment.findNavController
 
 
 class HomeFragment : Fragment() {
@@ -29,11 +39,12 @@ class HomeFragment : Fragment() {
         fun newInstance() = HomeFragment()
     }
 
-    private lateinit var viewModel: HomeViewModel
     private var homeFragmentBinding: HomeFragmentBinding? = null
 
+    private lateinit var viewModel: HomeViewModel
 
     private val binding get() = homeFragmentBinding!!
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,15 +54,14 @@ class HomeFragment : Fragment() {
         return homeFragmentBinding!!.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
-        // TODO: Use the ViewModel
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
         super.onViewCreated(view, savedInstanceState)
         val searchBar = homeFragmentBinding?.searchText
+        viewModel = ViewModelProvider(requireActivity()).get(HomeViewModel::class.java)
+
+
         searchBar?.setOnFocusChangeListener { _, hasFocus ->
             (activity as MainActivity).showSoftKeyboard(searchBar,hasFocus)
             if (hasFocus) {
@@ -69,6 +79,13 @@ class HomeFragment : Fragment() {
                 }
             }
         }
+
+        val chosenPackageObserver = Observer<String> { chosenPackage ->
+            searchBar?.setTextAppearance(R.style.SearchText)
+            searchBar?.setText(viewModel.getChosenPackage().toString())
+            Log.d("TAG",viewModel.getChosenPackage().toString())
+        }
+        viewModel.chosenPackage.observe(this, chosenPackageObserver)
 
         val carouselMenu = homeFragmentBinding?.carouselMenu
 
@@ -88,6 +105,48 @@ class HomeFragment : Fragment() {
                 carouselMenu.addItemDecoration(itemDecoration)
             }
         }
+
+        val DRAWABLE_RIGHT = 2
+        searchBar?.setOnTouchListener(object : View.OnTouchListener {
+            override fun onTouch(v: View, event: MotionEvent): Boolean {
+                if (event.getAction() === MotionEvent.ACTION_UP) {
+                    if (event.getRawX() >= searchBar.right - searchBar.getCompoundDrawables()
+                            .get(DRAWABLE_RIGHT).getBounds().width()
+                    ) {
+                        Toast.makeText(context, "search clicked", Toast.LENGTH_SHORT).show()
+                            viewModel.getAllAssets(searchBar.text.toString())
+                        findNavController().navigate(
+                            R.id.action_homeFragment_to_detailsFragment
+                        )
+                        // your action here                    edittextview_confirmpassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    }
+                } else {
+//                searchBar.setInputType(InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS)
+                }
+                return v?.onTouchEvent(event) ?: true
+
+            }
+        })
+
+        val installedPackages = homeFragmentBinding?.installedPackages
+
+        installedPackages?.setOnClickListener {
+//            val pm: PackageManager? = context?.packageManager
+////get a list of installed apps.
+////get a list of installed apps.
+//            if(pm != null)
+//            {
+//                val packages: List<ApplicationInfo> =
+//                    pm.getInstalledApplications(PackageManager.GET_META_DATA)
+//
+//                for (packageInfo in packages) {
+//                    Log.d("TAG", "Installed package :" + packageInfo.packageName)
+//                }
+//            }
+            installedApps()
+        }
+
+
 //
 //        carouselMotionLayoutBinding?.carousel?.setAdapter(object : Carousel.Adapter {
 //            override fun count(): Int {
@@ -104,6 +163,19 @@ class HomeFragment : Fragment() {
 //                // called when an item is set
 //            }
 //        })
+    }
+
+    private fun installedApps() {
+        val packList: List<PackageInfo>? = context?.packageManager?.getInstalledPackages(0)
+        val installedPackageList: MutableList<String> = mutableListOf()
+
+        if(packList != null)
+            for (i in packList.indices) {
+                val packInfo = packList[i]
+                if (packInfo.applicationInfo.flags and ApplicationInfo.FLAG_SYSTEM == 0 && packInfo.packageName != null)
+                    installedPackageList.add(packInfo.packageName)
+            }
+        activity?.let { InstalledPackagesListDialogFragment.newInstance(installedPackageList).show(it.supportFragmentManager, "dialog") }
     }
 
 }
