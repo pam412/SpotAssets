@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">SpotAssets</string>
+    <string name="enter_package_name">Type your input here...</string>
+    <string name="coming_soon">Coming soon</string>
+    <string name="found_nothing">Found Nothing</string>
+    <string name="wordlist">Wordlist</string>
+    <string name="hosts">Hosts</string>
+    <string name="s3_buckets">S3 Buckets</string>
+    <string name="all_assets">All Assets</string>
+    <string name="url_params">URL Params</string>
+    <string name="apps">Apps</string>
+    <string name="subdomains">Subdomains</string>
+    <string name="urls">URLs</string>
+    <string name="search_for_s3">Search For S3</string>
+    <string name="package_id">package_id</string>
+    <string name="domain">domain</string>
+    <string name="keyword">keyword</string>
+    <string name="detail">detail</string>
+    <string name="show_installed_packages">Show installed packages</string>
+    <string name="wordlist_desc">Send a package ID as input and will return a wordlist created by keywords extracted from different endpoints (eg. URLs, file paths) found in the APK.</string>
+    <string name="hosts_desc">Send a package ID as input and will return all the unique hosts found in the APK.</string>
+    <string name="s3_buckets_desc">Send a package ID as input and will return all the S3 bucket URLs found in the APK.</string>
+    <string name="all_assets_desc">Send a package ID as input and will return all of the assets such as URLs, Hostnames, IP Addresses, Emails, File Paths, Firebase URLs, S3 URLs, etc associated with that APK.</string>
+    <string name="url_params_desc">Send a package ID as input and will return a key-value pair of query parameters and values extracted from all the URLs found in the APK.</string>
+    <string name="apps_desc">Send the domain name as input and will return all the Android apps which have the domain names mentioned in their APK.</string>
+    <string name="subdomains_desc">Send a domain name as input and will return the subdomains of that domain.</string>
+    <string name="urls_desc">Send a domain name(example: xvigil.com) as input and will return all of the URLs(example: xvigil.com/infra-monitor/web-apps?issue=) for that domain.</string>
+    <string name="search_for_s3_desc">Send a keyword (example: Paytm) as input and will return all of the S3 URLs (example: https://s3.ap-south-1.amazonaws.com/paytm-public/ ) for that keyword.</string>
+    <string name="please_try_again">Check if your request is correct or try again after sometime.</string>
+</resources>

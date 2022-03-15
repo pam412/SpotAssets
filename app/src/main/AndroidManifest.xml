@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.pam.spotassets">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"/>
+
+    <application
+        android:icon="@mipmap/spotasset_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/spotasset_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.SpotAssets">
+
+        <activity
+            android:name="com.pam.spotassets.view.SplashActivity"
+            android:theme="@style/SplashTheme"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.pam.spotassets.view.MainActivity"
+            android:windowSoftInputMode="adjustPan"
+            android:exported="true">
+        </activity>
+    </application>
+
+</manifest>
