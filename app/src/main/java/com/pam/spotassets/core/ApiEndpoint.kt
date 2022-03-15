@@ -1,6 +1,9 @@
 package com.pam.spotassets.core
 
 object ApiEndpoint {
+
+    const val BASE_URL: String = "https://osint.bevigil.com/"
+
     const val ALL_ASSETS: String = "api/{package_id}/all-assets/"
     const val WORDLIST: String = "api/{package_id}/wordlist/"
     const val HOSTS: String = "api/{package_id}/hosts/"

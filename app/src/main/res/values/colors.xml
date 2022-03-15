@@ -10,7 +10,11 @@
     <color name="yellow">#ffcd00</color>
     <color name="gray">#A9A9A9</color>
     <color name="app_black">#404348</color>
+    <color name="app_black_translucent">#dd404348</color>
     <color name="app_white">#F5F5F5</color>
+    <color name="app_white_translucent">#33F5F5F5</color>
+    <color name="list_item_selected_bg">#aaf5f5f5</color>
     <color name="bg_search_bar">#2d3035</color>
     <color name="icon_gray">#696c71</color>
+    <color name="stroke_gray">#dd636161</color>
 </resources>

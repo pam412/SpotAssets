@@ -1,9 +1,10 @@
 package com.pam.spotassets.core
 
+import com.pam.spotassets.BuildConfig
+import com.pam.spotassets.model.AllAssetsResponseModel
+import com.pam.spotassets.model.AppsResponseModel
+import com.pam.spotassets.model.URLParamsResponseModel
 import retrofit2.http.GET
-import retrofit2.http.Query
-import com.pam.spotassets.core.ApiEndpoint
-import com.pam.spotassets.model.*
 import retrofit2.http.Header
 import retrofit2.http.Path
 
@@ -19,31 +20,31 @@ interface ApiService {
     suspend fun getWordlist(
         @Header("X-Access-Token") apiKey: String = API_KEY,
         @Path("package_id") packageId: String
-    ): WordlistResponseModel
+    ): HashMap<String, Any>
 
     @GET(ApiEndpoint.S3_BUCKETS)
     suspend fun getS3Buckets(
         @Header("X-Access-Token") apiKey: String = API_KEY,
         @Path("package_id") packageId: String
-    ): S3BucketsResponseModel
+    ): HashMap<String, Any>
 
     @GET(ApiEndpoint.S3_KEYWORD)
     suspend fun getS3Keyword(
         @Header("X-Access-Token") apiKey: String = API_KEY,
         @Path("keyword") keyword: String
-    ): S3KeywordResponseModel
+    ): HashMap<String, Any>
 
     @GET(ApiEndpoint.SUBDOMAINS)
     suspend fun getSubdomains(
         @Header("X-Access-Token") apiKey: String = API_KEY,
         @Path("domain_name") domainName: String
-    ): SubdomainsResponseModel
+    ): HashMap<String, Any>
 
     @GET(ApiEndpoint.URLS)
     suspend fun getUrls(
         @Header("X-Access-Token") apiKey: String = API_KEY,
         @Path("domain_name") domainName: String
-    ): URLSResponseModel
+    ): HashMap<String, Any>
 
     @GET(ApiEndpoint.URL_PARAMS)
     suspend fun getUrlParams(
@@ -61,9 +62,9 @@ interface ApiService {
     suspend fun getHosts(
         @Header("X-Access-Token") apiKey: String = API_KEY,
         @Path("package_id") packageId: String
-    ): HostsResponseModel
+    ): HashMap<String, Any>
 
     companion object {
-        const val API_KEY = "Ct0jgwq8aVCQ5qaq"
+        const val API_KEY: String = BuildConfig.API_KEY
     }
 }

@@ -1,190 +1,315 @@
 package com.pam.spotassets.view
 
-import android.content.Context
 import android.content.pm.ApplicationInfo
-import android.content.pm.PackageManager
+import android.content.pm.PackageInfo
 import android.graphics.Rect
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
 import android.os.Bundle
-import android.text.InputType
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.OnFocusChangeListener
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
-import androidx.constraintlayout.helper.widget.Carousel
-import androidx.core.content.ContextCompat.getSystemService
-import androidx.recyclerview.widget.RecyclerView
-import com.pam.spotassets.R
-import com.pam.spotassets.databinding.CarouselMotionLayoutBinding
-import com.pam.spotassets.databinding.HomeFragmentBinding
-import com.pam.spotassets.viewmodel.HomeViewModel
-import android.view.MotionEvent
-import android.view.View.OnTouchListener
 import android.widget.Toast
-import androidx.fragment.app.viewModels
-import android.content.pm.PackageInfo
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
+import com.google.gson.JsonParser
+import com.pam.spotassets.R
+import com.pam.spotassets.databinding.HomeFragmentBinding
+import com.pam.spotassets.model.Resource
+import com.pam.spotassets.viewmodel.HomeViewModel
 
 
 class HomeFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = HomeFragment()
-    }
-
-    private var homeFragmentBinding: HomeFragmentBinding? = null
+    private var binding: HomeFragmentBinding? = null
+    private val homeFragmentBinding get() = binding!!
 
     private lateinit var viewModel: HomeViewModel
-
-    private val binding get() = homeFragmentBinding!!
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        homeFragmentBinding = HomeFragmentBinding.inflate(inflater, container, false)
-        return homeFragmentBinding!!.root
+        binding = HomeFragmentBinding.inflate(inflater, container, false)
+        return homeFragmentBinding.root
     }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         super.onViewCreated(view, savedInstanceState)
-        val searchBar = homeFragmentBinding?.searchText
         viewModel = ViewModelProvider(requireActivity()).get(HomeViewModel::class.java)
 
+        setObservers()
+        setCarouselMenu()
+        setSearchBar()
 
-        searchBar?.setOnFocusChangeListener { _, hasFocus ->
-            (activity as MainActivity).showSoftKeyboard(searchBar,hasFocus)
-            if (hasFocus) {
-                searchBar.setTextAppearance(R.style.SearchText)
-                Log.v("TAG", (searchBar as TextView).text.toString())
-                Log.v("TAG", getString(R.string.enter_package_name))
-
-                if ((searchBar as TextView).text.toString() == getString(R.string.enter_package_name))
-                    searchBar.setText("")
-            } else {
-                if ((searchBar as TextView).text.toString() == "") {
-                    searchBar.setTextAppearance(R.style.HintText)
-                    searchBar.setText(getString(R.string.enter_package_name))
-
-                }
-            }
-        }
-
-        val chosenPackageObserver = Observer<String> { chosenPackage ->
-            searchBar?.setTextAppearance(R.style.SearchText)
-            searchBar?.setText(viewModel.getChosenPackage().toString())
-            Log.d("TAG",viewModel.getChosenPackage().toString())
-        }
-        viewModel.chosenPackage.observe(this, chosenPackageObserver)
-
-        val carouselMenu = homeFragmentBinding?.carouselMenu
-
-        if (carouselMenu != null) {
-            carouselMenu.adapter = CarouselMenuAdapter()
-            carouselMenu.offscreenPageLimit = 1
-            carouselMenu.setPageTransformer(CarouselTransformer(requireContext()))
-
-
-            val itemDecoration = context?.let {
-                HorizontalMarginItemDecoration(
-                    it,
-                    0
-                )
-            }
-            if (itemDecoration != null) {
-                carouselMenu.addItemDecoration(itemDecoration)
-            }
-        }
-
-        val DRAWABLE_RIGHT = 2
-        searchBar?.setOnTouchListener(object : View.OnTouchListener {
-            override fun onTouch(v: View, event: MotionEvent): Boolean {
-                if (event.getAction() === MotionEvent.ACTION_UP) {
-                    if (event.getRawX() >= searchBar.right - searchBar.getCompoundDrawables()
-                            .get(DRAWABLE_RIGHT).getBounds().width()
-                    ) {
-                        Toast.makeText(context, "search clicked", Toast.LENGTH_SHORT).show()
-                            viewModel.getAllAssets(searchBar.text.toString())
-                        findNavController().navigate(
-                            R.id.action_homeFragment_to_detailsFragment
-                        )
-                        // your action here                    edittextview_confirmpassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                    }
-                } else {
-//                searchBar.setInputType(InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS)
-                }
-                return v?.onTouchEvent(event) ?: true
-
-            }
-        })
-
-        val installedPackages = homeFragmentBinding?.installedPackages
-
-        installedPackages?.setOnClickListener {
-//            val pm: PackageManager? = context?.packageManager
-////get a list of installed apps.
-////get a list of installed apps.
-//            if(pm != null)
-//            {
-//                val packages: List<ApplicationInfo> =
-//                    pm.getInstalledApplications(PackageManager.GET_META_DATA)
-//
-//                for (packageInfo in packages) {
-//                    Log.d("TAG", "Installed package :" + packageInfo.packageName)
-//                }
-//            }
+        val installedPackages = homeFragmentBinding.installedPackages
+        installedPackages.setOnClickListener {
             installedApps()
         }
 
+    }
 
-//
-//        carouselMotionLayoutBinding?.carousel?.setAdapter(object : Carousel.Adapter {
-//            override fun count(): Int {
-//                // need to return the number of items we have in the carousel
-//                return 9
-//            }
-//
-//            override fun populate(view: View, index: Int) {
-//                // need to implement this to populate the view at the given index
-//                (view as TextView).setText(carouselTexts.get(index))
-//            }
-//
-//            override fun onNewItem(index: Int) {
-//                // called when an item is set
-//            }
-//        })
+    override fun onResume() {
+        super.onResume()
+        homeFragmentBinding.searchText.setText(getString(R.string.enter_package_name))
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        binding = null
+    }
+
+    private fun setSearchBar() {
+        homeFragmentBinding.searchText.let {
+
+            it.setOnFocusChangeListener { _, hasFocus ->
+                (activity as MainActivity).showSoftKeyboard(it, hasFocus)
+                if (hasFocus) {
+                    it.setTextAppearance(R.style.SearchText)
+                    if ((it as TextView).text.toString() == getString(R.string.enter_package_name))
+                        it.setText("")
+                } else {
+                    if ((it as TextView).text.toString() == "") {
+                        it.setTextAppearance(R.style.HintText)
+                        it.setText(getString(R.string.enter_package_name))
+                    }
+                }
+            }
+        }
+
+        homeFragmentBinding.searchIcon.setOnClickListener { v ->
+
+            homeFragmentBinding.searchText.let { (activity as MainActivity).showSoftKeyboard(it, false) }
+
+            if (viewModel.menuChosen == getString(R.string.all_assets)) getAllAssets(homeFragmentBinding.searchText.text.toString())
+            else if (viewModel.menuChosen == getString(R.string.wordlist) ||
+                viewModel.menuChosen == getString(R.string.hosts) ||
+                viewModel.menuChosen == getString(R.string.s3_buckets) ||
+                viewModel.menuChosen == getString(R.string.subdomains) ||
+                viewModel.menuChosen == getString(R.string.urls) ||
+                viewModel.menuChosen == getString(R.string.search_for_s3)
+            ) getSelectedAssets(viewModel.menuChosen, homeFragmentBinding.searchText.text.toString())
+            else if (viewModel.menuChosen == getString(R.string.url_params)) getUrlParams(homeFragmentBinding.searchText.text.toString())
+
+            if (viewModel.menuChosen != getString(R.string.apps)) {
+                v.visibility = View.GONE
+                homeFragmentBinding.progressBarCyclic.visibility = View.VISIBLE
+            } else wipDialog()
+
+        }
+    }
+
+    private fun setCarouselMenu() {
+
+        val carouselMenu = homeFragmentBinding.carouselMenu
+
+        carouselMenu.adapter = CarouselMenuAdapter(requireActivity())
+        carouselMenu.offscreenPageLimit = 1
+        carouselMenu.setPageTransformer(CarouselTransformer(requireContext()))
+
+        val itemDecoration = context?.let { HorizontalMarginItemDecoration(0) }
+
+        if (itemDecoration != null)
+            carouselMenu.addItemDecoration(itemDecoration)
+
+        val carouselMenuPageChangeCallback = object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                viewModel.menuChosen = context?.getString(viewModel.carouselTexts[position]) ?: ""
+                setMenuDescription(viewModel.menuChosen)
+            }
+        }
+
+        carouselMenu.registerOnPageChangeCallback(carouselMenuPageChangeCallback)
+    }
+
+    private fun setObservers() {
+
+        val chosenPackageObserver = Observer<String> {
+            homeFragmentBinding.searchText.setTextAppearance(R.style.SearchText)
+            homeFragmentBinding.searchText.setText(viewModel.getChosenPackage().toString())
+        }
+
+        viewModel.chosenPackage.observe(this, chosenPackageObserver)
+    }
+
+    private fun wipDialog() {
+
+        homeFragmentBinding.searchIcon.visibility = View.VISIBLE
+        homeFragmentBinding.progressBarCyclic.visibility = View.GONE
+
+        activity?.let {
+            WIPDialogFragment.newInstance().show(it.supportFragmentManager, "dialog")
+        }
     }
 
     private fun installedApps() {
         val packList: List<PackageInfo>? = context?.packageManager?.getInstalledPackages(0)
         val installedPackageList: MutableList<String> = mutableListOf()
 
-        if(packList != null)
+        if (packList != null)
             for (i in packList.indices) {
                 val packInfo = packList[i]
                 if (packInfo.applicationInfo.flags and ApplicationInfo.FLAG_SYSTEM == 0 && packInfo.packageName != null)
                     installedPackageList.add(packInfo.packageName)
             }
-        activity?.let { InstalledPackagesListDialogFragment.newInstance(installedPackageList).show(it.supportFragmentManager, "dialog") }
+        activity?.let {
+            InstalledPackagesListDialogFragment.newInstance(installedPackageList)
+                .show(it.supportFragmentManager, "dialog")
+        }
     }
 
+    private fun getAllAssets(packageId: String) {
+        viewModel.getAllAssets(packageId).observe(
+            viewLifecycleOwner
+        ) {
+            when (it.status) {
+                Resource.Status.SUCCESS -> {
+                    if (it.data != null) {
+                        viewModel.expandableListDetail = it.data.assets
+                        homeFragmentBinding.progressBarCyclic.visibility = View.GONE
+                        homeFragmentBinding.searchIcon.visibility = View.VISIBLE
+                        findNavController().navigate(
+                            R.id.action_homeFragment_to_detailsFragment
+                        )
+                    } else {
+                        Toast.makeText(
+                            context,
+                            getString(R.string.please_try_again),
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                }
+                Resource.Status.ERROR -> {
+                    val message = JsonParser().parse(it.errorResponse)
+                    Toast.makeText(
+                        context,
+                        message.asJsonObject.get(getString(R.string.detail)).asString,
+                        Toast.LENGTH_LONG
+                    ).show()
+                    homeFragmentBinding.progressBarCyclic.visibility = View.GONE
+                    homeFragmentBinding.searchIcon.visibility = View.VISIBLE
+                }
+                Resource.Status.LOADING -> {
+                    homeFragmentBinding.progressBarCyclic.visibility = View.VISIBLE
+                    homeFragmentBinding.searchIcon.visibility = View.GONE
+                }
+            }
+        }
+    }
+
+    private fun getUrlParams(packageId: String) {
+        viewModel.getUrlParams(packageId).observe(
+            viewLifecycleOwner
+        ) {
+            when (it.status) {
+                Resource.Status.SUCCESS -> {
+                    if (it.data != null) {
+                        viewModel.expandableListDetail = it.data.url_params
+                        homeFragmentBinding.progressBarCyclic.visibility = View.GONE
+                        homeFragmentBinding.searchIcon.visibility = View.VISIBLE
+                        findNavController().navigate(
+                            R.id.action_homeFragment_to_detailsFragment
+                        )
+                    } else {
+                        Toast.makeText(
+                            context,
+                            getString(R.string.please_try_again),
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                }
+                Resource.Status.ERROR -> {
+                    val message = JsonParser().parse(it.errorResponse)
+                    Toast.makeText(
+                        context,
+                        message.asJsonObject.get(getString(R.string.detail)).asString,
+                        Toast.LENGTH_LONG
+                    ).show()
+                    homeFragmentBinding.progressBarCyclic.visibility = View.GONE
+                    homeFragmentBinding.searchIcon.visibility = View.VISIBLE
+                }
+                Resource.Status.LOADING -> {
+                    homeFragmentBinding.progressBarCyclic.visibility = View.VISIBLE
+                    homeFragmentBinding.searchIcon.visibility = View.GONE
+                }
+            }
+        }
+    }
+
+    private fun getSelectedAssets(type: String, packageId: String) {
+        viewModel.getSelectedAssets(type, packageId).observe(
+            viewLifecycleOwner
+        ) {
+            when (it.status) {
+                Resource.Status.SUCCESS -> {
+                    homeFragmentBinding.progressBarCyclic.visibility = View.GONE
+                    homeFragmentBinding.searchIcon.visibility = View.VISIBLE
+                    if (!it.data.isNullOrEmpty()) {
+                        viewModel.expandableListDetail = it.data
+                        viewModel.expandableListDetail.remove(getString(R.string.package_id))
+                        viewModel.expandableListDetail.remove(getString(R.string.domain))
+                        viewModel.expandableListDetail.remove(getString(R.string.keyword))
+                        findNavController().navigate(
+                            R.id.action_homeFragment_to_detailsFragment
+                        )
+                    } else {
+                        Toast.makeText(
+                            context,
+                            getString(R.string.please_try_again),
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                }
+                Resource.Status.ERROR -> {
+                    val message = JsonParser().parse(it.errorResponse)
+                    Toast.makeText(
+                        context,
+                        message.asJsonObject.get(getString(R.string.detail)).asString,
+                        Toast.LENGTH_LONG
+                    ).show()
+                    homeFragmentBinding.progressBarCyclic.visibility = View.GONE
+                    homeFragmentBinding.searchIcon.visibility = View.VISIBLE
+                }
+                Resource.Status.LOADING -> {
+                    homeFragmentBinding.progressBarCyclic.visibility = View.VISIBLE
+                    homeFragmentBinding.searchIcon.visibility = View.GONE
+                }
+            }
+        }
+    }
+
+    private fun setMenuDescription(menu: String) {
+        when (menu) {
+            getString(R.string.wordlist) -> homeFragmentBinding.menuDescription.text =
+                getString(R.string.wordlist_desc)
+            getString(R.string.hosts) -> homeFragmentBinding.menuDescription.text = getString(R.string.hosts_desc)
+            getString(R.string.s3_buckets) -> homeFragmentBinding.menuDescription.text =
+                getString(R.string.s3_buckets_desc)
+            getString(R.string.all_assets) -> homeFragmentBinding.menuDescription.text =
+                getString(R.string.all_assets_desc)
+            getString(R.string.url_params) -> homeFragmentBinding.menuDescription.text =
+                getString(R.string.url_params_desc)
+            getString(R.string.apps) -> homeFragmentBinding.menuDescription.text = getString(R.string.apps_desc)
+            getString(R.string.subdomains) -> homeFragmentBinding.menuDescription.text =
+                getString(R.string.subdomains_desc)
+            getString(R.string.urls) -> homeFragmentBinding.menuDescription.text = getString(R.string.urls_desc)
+            getString(R.string.search_for_s3) -> homeFragmentBinding.menuDescription.text =
+                getString(R.string.search_for_s3_desc)
+            else -> homeFragmentBinding.menuDescription.text = ""
+        }
+    }
 }
 
-class HorizontalMarginItemDecoration(context: Context, horizontalMarginInDp: Int) :
+class HorizontalMarginItemDecoration(horizontalMarginInDp: Int) :
     RecyclerView.ItemDecoration() {
 
     private val horizontalMarginInPx: Int = horizontalMarginInDp
-//        context.resources.getDimension(horizontalMarginInDp).toInt()
 
     override fun getItemOffsets(
         outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State

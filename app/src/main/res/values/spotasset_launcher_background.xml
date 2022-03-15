@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="spotasset_launcher_background">#FFCD00</color>
+    <color name="spotasset_launcher_background">@color/yellow</color>
 </resources>

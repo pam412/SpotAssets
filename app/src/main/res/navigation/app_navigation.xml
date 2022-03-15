@@ -11,16 +11,13 @@
         tools:layout="@layout/home_fragment">
         <action
             android:id="@+id/action_homeFragment_to_detailsFragment"
-            app:destination="@id/detailsFragment"
-            app:popUpTo="@id/homeFragment"
-            app:popUpToInclusive="true"
-            app:exitAnim="@anim/nav_default_pop_exit_anim"/>
+            app:destination="@id/detailsFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/detailsFragment"
         android:name="com.pam.spotassets.view.DetailsFragment"
         android:label="fragment_details_list"
-        tools:layout="@layout/fragment_details_list"/>
+        tools:layout="@layout/fragment_details_list" />
 
 </navigation>

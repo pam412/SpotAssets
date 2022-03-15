@@ -1,17 +1,11 @@
 package com.pam.spotassets.view
 
 import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import androidx.activity.viewModels
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
+import androidx.appcompat.app.AppCompatActivity
 import com.pam.spotassets.R
-import com.pam.spotassets.databinding.HomeFragmentBinding
-import com.pam.spotassets.viewmodel.HomeViewModel
 
 class MainActivity : AppCompatActivity() {
 
@@ -26,7 +20,7 @@ class MainActivity : AppCompatActivity() {
             imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
         }
         else {
-            imm.hideSoftInputFromWindow(view.windowToken, 0);
+            imm.hideSoftInputFromWindow(view.windowToken, 0)
         }
     }
 

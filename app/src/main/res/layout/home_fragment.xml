@@ -1,79 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clickable="true"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    android:theme="@style/Theme.SpotAssets"
-    tools:context=".view.HomeFragment">
+    android:theme="@style/Theme.SpotAssets">
 
     <TextView
         android:id="@+id/label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="70dp"
+        android:layout_marginStart="@dimen/_30dp"
+        android:layout_marginTop="@dimen/_70dp"
         android:fontFamily="@font/typographica"
         android:text="@string/app_name"
-        android:textSize="55sp"
+        android:textSize="@dimen/_55sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/searchText"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginTop="200dp"
+        android:layout_height="@dimen/_60dp"
+        android:layout_marginStart="@dimen/_20dp"
+        android:layout_marginTop="@dimen/_50dp"
+        android:layout_marginEnd="@dimen/_20dp"
         android:background="@drawable/search_bar"
-        android:drawableEnd="@drawable/ic_search_24"
-        android:drawablePadding="10dp"
         android:importantForAutofill="no"
         android:inputType="text"
-        android:padding="15dp"
+        android:padding="@dimen/_15dp"
         android:text="@string/enter_package_name"
         android:textAppearance="@style/HintText"
         android:textColor="@color/icon_gray"
-        app:boxStrokeWidth="0dp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:boxStrokeWidth="@dimen/_0dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/label" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/menuDescription" />
 
     <TextView
         android:id="@+id/installedPackages"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/searchText"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="@dimen/_20dp"
+        android:layout_marginTop="@dimen/_20dp"
+        android:text="@string/show_installed_packages"
+        android:textAppearance="@style/MenuText"
+        android:textSize="@dimen/_15sp"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:text="Show installed packages"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/searchText" />
 
-    <!-- <include
-        layout="@layout/carousel_motion_layout"
+    <TextView
+        android:id="@+id/menuDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="30dp"
+        android:layout_marginHorizontal="@dimen/_30dp"
+        android:layout_marginTop="@dimen/_30dp"
+        android:textAppearance="@style/DetailsListText"
+        android:textColor="@color/app_white"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/label" /> -->
+        app:layout_constraintTop_toBottomOf="@id/carouselMenu" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_17dp"
+        android:layout_marginEnd="@dimen/_10dp"
+        android:src="@drawable/ic_folder"
+        app:layout_constraintEnd_toStartOf="@id/installedPackages"
+        app:layout_constraintTop_toBottomOf="@id/searchText" />
+
+    <ImageView
+        android:id="@+id/searchIcon"
+        android:layout_width="@dimen/_60dp"
+        android:layout_height="@dimen/_60dp"
+        android:layout_marginVertical="@dimen/_15dp"
+        android:layout_marginEnd="@dimen/_5dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:padding="@dimen/_15dp"
+        android:src="@drawable/ic_search_24"
+        app:layout_constraintBottom_toBottomOf="@id/searchText"
+        app:layout_constraintEnd_toEndOf="@id/searchText"
+        app:layout_constraintTop_toTopOf="@id/searchText" />
+
+    <ProgressBar
+        android:id="@+id/progressBar_cyclic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:minWidth="@dimen/_40dp"
+        android:minHeight="@dimen/_40dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/searchText"
+        app:layout_constraintEnd_toEndOf="@id/searchText"
+        app:layout_constraintTop_toTopOf="@id/searchText" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/carouselMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="30dp"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="@dimen/_30dp"
+        android:layout_marginTop="@dimen/_30dp"
+        android:layout_marginEnd="@dimen/_30dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/label" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

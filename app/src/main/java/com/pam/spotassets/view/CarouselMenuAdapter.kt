@@ -1,27 +1,28 @@
 package com.pam.spotassets.view
 
-import android.view.ContextMenu
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.pam.spotassets.R
+import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.RecyclerView
 import com.pam.spotassets.databinding.CarouselMenuItemBinding
+import com.pam.spotassets.viewmodel.HomeViewModel
 
-class CarouselMenuAdapter : RecyclerView.Adapter<CarouselMenuAdapter.PagerVH>() {
+class CarouselMenuAdapter(activity: FragmentActivity) : RecyclerView.Adapter<CarouselMenuAdapter.PagerVH>() {
 
-    private val carouselTexts = intArrayOf(R.string.wordlist, R.string.hosts, R.string.s3_buckets, R.string.all_assets, R.string.url_params, R.string.apps, R.string.subdomains, R.string.urls, R.string.search_for_s3)
+    private var viewModel = ViewModelProvider(activity).get(HomeViewModel::class.java)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PagerVH {
         val binding = CarouselMenuItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return PagerVH(binding)
     }
-    //get the size of color array
-    override fun getItemCount(): Int = carouselTexts.size
 
-    //binding the screen with view
+    override fun getItemCount(): Int = viewModel.carouselTexts.size
+
     override fun onBindViewHolder(holder: PagerVH, position: Int) = holder.itemView.run {
-        val text = context.getString(carouselTexts[position])
+        val text = context.getString(viewModel.carouselTexts[position])
         holder.bind(text)
+        viewModel.menuChosen = text
     }
 
     class PagerVH(private var carouselMenuItemBinding: CarouselMenuItemBinding) : RecyclerView.ViewHolder(carouselMenuItemBinding.root) {
