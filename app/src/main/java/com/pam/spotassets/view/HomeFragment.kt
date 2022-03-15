@@ -57,6 +57,7 @@ class HomeFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        homeFragmentBinding.searchText.setTextAppearance(R.style.HintText)
         homeFragmentBinding.searchText.setText(getString(R.string.enter_package_name))
     }
 
@@ -85,17 +86,29 @@ class HomeFragment : Fragment() {
 
         homeFragmentBinding.searchIcon.setOnClickListener { v ->
 
-            homeFragmentBinding.searchText.let { (activity as MainActivity).showSoftKeyboard(it, false) }
+            homeFragmentBinding.searchText.let {
+                (activity as MainActivity).showSoftKeyboard(
+                    it,
+                    false
+                )
+            }
 
-            if (viewModel.menuChosen == getString(R.string.all_assets)) getAllAssets(homeFragmentBinding.searchText.text.toString())
+            if (viewModel.menuChosen == getString(R.string.all_assets)) getAllAssets(
+                homeFragmentBinding.searchText.text.toString()
+            )
             else if (viewModel.menuChosen == getString(R.string.wordlist) ||
                 viewModel.menuChosen == getString(R.string.hosts) ||
                 viewModel.menuChosen == getString(R.string.s3_buckets) ||
                 viewModel.menuChosen == getString(R.string.subdomains) ||
                 viewModel.menuChosen == getString(R.string.urls) ||
                 viewModel.menuChosen == getString(R.string.search_for_s3)
-            ) getSelectedAssets(viewModel.menuChosen, homeFragmentBinding.searchText.text.toString())
-            else if (viewModel.menuChosen == getString(R.string.url_params)) getUrlParams(homeFragmentBinding.searchText.text.toString())
+            ) getSelectedAssets(
+                viewModel.menuChosen,
+                homeFragmentBinding.searchText.text.toString()
+            )
+            else if (viewModel.menuChosen == getString(R.string.url_params)) getUrlParams(
+                homeFragmentBinding.searchText.text.toString()
+            )
 
             if (viewModel.menuChosen != getString(R.string.apps)) {
                 v.visibility = View.GONE
@@ -251,13 +264,19 @@ class HomeFragment : Fragment() {
                     homeFragmentBinding.progressBarCyclic.visibility = View.GONE
                     homeFragmentBinding.searchIcon.visibility = View.VISIBLE
                     if (!it.data.isNullOrEmpty()) {
-                        viewModel.expandableListDetail = it.data
-                        viewModel.expandableListDetail.remove(getString(R.string.package_id))
-                        viewModel.expandableListDetail.remove(getString(R.string.domain))
-                        viewModel.expandableListDetail.remove(getString(R.string.keyword))
-                        findNavController().navigate(
-                            R.id.action_homeFragment_to_detailsFragment
-                        )
+                        if (!it.data.containsKey(getString(R.string.detail))) {
+                            viewModel.expandableListDetail = it.data
+                            viewModel.expandableListDetail.remove(getString(R.string.package_id))
+                            viewModel.expandableListDetail.remove(getString(R.string.domain))
+                            viewModel.expandableListDetail.remove(getString(R.string.keyword))
+                            findNavController().navigate(
+                                R.id.action_homeFragment_to_detailsFragment
+                            )
+                        } else Toast.makeText(
+                            context,
+                            it.data[getString(R.string.detail)].toString(),
+                            Toast.LENGTH_LONG
+                        ).show()
                     } else {
                         Toast.makeText(
                             context,
@@ -288,17 +307,20 @@ class HomeFragment : Fragment() {
         when (menu) {
             getString(R.string.wordlist) -> homeFragmentBinding.menuDescription.text =
                 getString(R.string.wordlist_desc)
-            getString(R.string.hosts) -> homeFragmentBinding.menuDescription.text = getString(R.string.hosts_desc)
+            getString(R.string.hosts) -> homeFragmentBinding.menuDescription.text =
+                getString(R.string.hosts_desc)
             getString(R.string.s3_buckets) -> homeFragmentBinding.menuDescription.text =
                 getString(R.string.s3_buckets_desc)
             getString(R.string.all_assets) -> homeFragmentBinding.menuDescription.text =
                 getString(R.string.all_assets_desc)
             getString(R.string.url_params) -> homeFragmentBinding.menuDescription.text =
                 getString(R.string.url_params_desc)
-            getString(R.string.apps) -> homeFragmentBinding.menuDescription.text = getString(R.string.apps_desc)
+            getString(R.string.apps) -> homeFragmentBinding.menuDescription.text =
+                getString(R.string.apps_desc)
             getString(R.string.subdomains) -> homeFragmentBinding.menuDescription.text =
                 getString(R.string.subdomains_desc)
-            getString(R.string.urls) -> homeFragmentBinding.menuDescription.text = getString(R.string.urls_desc)
+            getString(R.string.urls) -> homeFragmentBinding.menuDescription.text =
+                getString(R.string.urls_desc)
             getString(R.string.search_for_s3) -> homeFragmentBinding.menuDescription.text =
                 getString(R.string.search_for_s3_desc)
             else -> homeFragmentBinding.menuDescription.text = ""

@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ExpandableListAdapter
 import android.widget.ExpandableListView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.pam.spotassets.R
@@ -54,6 +55,14 @@ class DetailsFragment : Fragment() {
                     )
                 }
                 expandableListView!!.setAdapter(adapter)
+                expandableListView!!.setOnGroupExpandListener { groupPosition ->
+                    if(listData[(titleList as ArrayList<String>)[groupPosition]].isNullOrEmpty())
+                    Toast.makeText(
+                        context,
+                        getString(R.string.found_nothing),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
         }
     }

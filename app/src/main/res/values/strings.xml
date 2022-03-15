@@ -2,6 +2,7 @@
     <string name="app_name">SpotAssets</string>
     <string name="enter_package_name">Type your input here...</string>
     <string name="coming_soon">Coming soon</string>
+    <string name="found_nothing">Found Nothing</string>
     <string name="wordlist">Wordlist</string>
     <string name="hosts">Hosts</string>
     <string name="s3_buckets">S3 Buckets</string>
